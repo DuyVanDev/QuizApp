@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".QuizActivity">
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:layout_centerHorizontal="true">-->
+<!--        <TextView-->
+<!--            android:id="@+id/textView1"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="20dp"-->
+<!--            android:text="Large Text"-->
+<!--            android:textAppearance="?android:attr/textAppearanceLarge" />-->
+<!--        <RadioGroup-->
+<!--            android:id="@+id/radioGroup1"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:padding="20dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="0.04" >-->
+<!--            <RadioButton-->
+<!--                android:id="@+id/radio0"-->
+<!--                android:padding="20dp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="RadioButton" />-->
+<!--            <RadioButton-->
+<!--                android:id="@+id/radio1"-->
+<!--                android:padding="20dp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="RadioButton" />-->
+<!--            <RadioButton-->
+<!--                android:id="@+id/radio2"-->
+<!--                android:padding="20dp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="RadioButton" />-->
+<!--            <RadioButton-->
+<!--                android:id="@+id/radio3"-->
+<!--                android:padding="20dp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="RadioButton" />-->
+<!--        </RadioGroup>-->
+
+
+<!--        <Button-->
+<!--            android:id="@+id/button1"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="next" />-->
+<!--    </LinearLayout>-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#1F6BB8"
+        
+        >
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/ic_launcher_background"
+            ></ImageView>
+        
+        <TextView
+            android:id="@+id/topicName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Select topic Name"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            ></TextView>
+        
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="15dp"
+                android:src="@mipmap/ic_launcher"
+                ></ImageView>
+
+            <TextView
+                android:id="@+id/timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="00:59"
+                android:textColor="#FAA72F"
+                ></TextView>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/background_white"
+        android:elevation="1dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:text="1/10"
+        android:textColor="#1F6BB8"
+        ></TextView>
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/background_white"
+        android:gravity="center"
+        android:minHeight="100dp"
+        android:padding="20dp"
+        android:textColor="#CC000000"
+        android:text="Question will come here"
+        android:textSize="16dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/option1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:text="Option 1"
+        android:background="@drawable/round_back_white_stroke_10"
+        android:textColor="#1F6BB8"
+        android:textAllCaps="false"
+        android:layout_marginEnd="20dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/option2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Option 1"
+        android:background="@drawable/round_back_white_stroke_10"
+        android:textColor="#1F6BB8"
+        android:textAllCaps="false"
+        android:layout_marginEnd="20dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/option3"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Option 1"
+        android:background="@drawable/round_back_white_stroke_10"
+        android:textColor="#1F6BB8"
+        android:textAllCaps="false"
+        android:layout_marginEnd="20dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/option4"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Option 1"
+        android:background="@drawable/round_back_white_stroke_10"
+        android:textColor="#1F6BB8"
+        android:textAllCaps="false"
+        android:layout_marginEnd="20dp"
+        />
+
+    <Button
+        android:id="@+id/nextBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:text="Next"
+        android:backgroundTint="#4CAF79"
+        android:textColor="#1F6BB8"
+        android:layout_marginEnd="20dp"
+        />
+
+</LinearLayout>
