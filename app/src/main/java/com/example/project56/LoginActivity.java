@@ -146,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         initDB();
-        addQuestions();
+//        addQuestions();
         btnLogin=(Button) findViewById(R.id.btnLogin);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
