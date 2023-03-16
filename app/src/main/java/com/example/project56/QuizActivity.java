@@ -29,7 +29,7 @@ public class QuizActivity extends AppCompatActivity {
     int questionPosition=0;
     String selectedOptionByUser = "";
     Timer quiztimer;
-    int totalTimeInMins = 1;
+    int totalTimeInMins = 20;
     int seconds = 0;
     SQLiteDatabase db;
     private List<Question> questionList;
@@ -57,7 +57,7 @@ public class QuizActivity extends AppCompatActivity {
 
         startTimer(timer);
 
-        txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+        txtQuestions.setText((questionPosition + 1) + ""+"/"+(questionList.size()));
         txtQuestion.setText(questionList.get(0).getQuestion());
         option1.setText(questionList.get(0).getOption1());
         option2.setText(questionList.get(0).getOption2());
@@ -183,11 +183,23 @@ public class QuizActivity extends AppCompatActivity {
 
     private void changeNextQuestion() {
         questionPosition++;
-        getAnswer = questionList.get(questionPosition).getAnswer_cr();
+
         if((questionPosition+1) == questionList.size()) {
             nextBtn.setText("Submit Quiz");
         }
-        else if(questionPosition < questionList.size()) {
+
+        if(questionPosition >= questionList.size()) {
+            Intent intent = new Intent(QuizActivity.this,ResultActivity.class);
+            quiztimer.purge();
+            quiztimer.cancel();
+            intent.putExtra("correct",getCorrectAnswers());
+            intent.putExtra("incorrect",getInCorrectAnswers());
+            startActivity(intent);
+            finish();
+        }
+        else  {
+            getAnswer = questionList.get(questionPosition).getAnswer_cr();
+
             selectedOptionByUser = "";
             option1.setTextColor(Color.parseColor("#1F6BB8"));
             option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
@@ -203,13 +215,7 @@ public class QuizActivity extends AppCompatActivity {
             option3.setText(questionList.get(questionPosition).getOption3());
             option4.setText(questionList.get(questionPosition).getOption4());
             txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
-        }
-        else {
-            Intent intent = new Intent(QuizActivity.this,ResultActivity.class);
-            intent.putExtra("correct",getCorrectAnswers());
-            intent.putExtra("incorrect",getInCorrectAnswers());
-            startActivity(intent);
-            finish();
+
         }
     }
 
@@ -218,19 +224,23 @@ public class QuizActivity extends AppCompatActivity {
         quiztimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if(seconds == 0) {
-                    totalTimeInMins--;
-                    seconds = 59;
+
+                if(seconds <11 && totalTimeInMins ==0) {
+                    timerTextView.setTextColor(Color.RED);
                 }
-                else if(seconds == 0 && totalTimeInMins ==0) {
+
+                if(seconds == 0 && totalTimeInMins == 00) {
                     quiztimer.purge();
                     quiztimer.cancel();
-                    Toast.makeText(QuizActivity.this, "Time Over", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(QuizActivity.this,ResultActivity.class);
                     intent.putExtra("correct",getCorrectAnswers());
                     intent.putExtra("incorrect",getInCorrectAnswers());
                     startActivity(intent);
                     finish();
+                }
+                else if(seconds == 0) {
+                    totalTimeInMins--;
+                    seconds = 59;
                 }
                 else {
                     seconds--;
@@ -259,10 +269,13 @@ public class QuizActivity extends AppCompatActivity {
 
         int correctAnswers = 0;
         for(int i = 0; i < questionList.size(); i++) {
-            String getUserSelectedAnswers = questionList.get(i).getUserSelectedAnswer();
+            String getUserSelectedAnswers = questionList.get(i).getUserSelectedAnswer() ;
             String getAnswer = questionList.get(i).getAnswer_cr();
 
-            if(getUserSelectedAnswers.equals(getAnswer)) {
+            if(getUserSelectedAnswers == null) {
+                correctAnswers = correctAnswers + 0;
+            }
+            else if(getUserSelectedAnswers.equals(getAnswer)) {
                 correctAnswers++;
             }
         }
@@ -271,17 +284,19 @@ public class QuizActivity extends AppCompatActivity {
     }
     private int getInCorrectAnswers() {
 
-        int correctAnswers = 0;
+        int inCorrectAnswers = 0;
         for(int i = 0; i < questionList.size(); i++) {
             String getUserSelectedAnswers = questionList.get(i).getUserSelectedAnswer();
             String getAnswer = questionList.get(i).getAnswer_cr();
-
-            if(!getUserSelectedAnswers.equals(getAnswer)) {
-                correctAnswers++;
+            if(getUserSelectedAnswers == null) {
+                inCorrectAnswers = inCorrectAnswers + 0;
+            }
+            else if(!getUserSelectedAnswers.equals(getAnswer)) {
+                inCorrectAnswers++;
             }
         }
 
-        return correctAnswers;
+        return inCorrectAnswers;
     }
 
     @Override
@@ -295,7 +310,6 @@ public class QuizActivity extends AppCompatActivity {
     private void revealAnswer() {
         final MediaPlayer mediaPlayer = MediaPlayer.create(QuizActivity.this,R.raw.correct);
 
-        Toast.makeText(QuizActivity.this, getAnswer + " " + selectedOptionByUser, Toast.LENGTH_SHORT).show();
 
         if(option1.getText().toString().equals(getAnswer)) {
             option1.setBackgroundResource(R.drawable.round_back_green10);
@@ -322,7 +336,7 @@ public class QuizActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int value2 = intent.getIntExtra("categoryId",0);
         db = openOrCreateDatabase(LoginActivity.DATABASE_NAME, MODE_PRIVATE,null);
-        Cursor c = db.rawQuery("SELECT  * FROM " + LoginActivity.TABLE_QUESTION + " where " + LoginActivity.COLUMN_SUBJECT_ID_RF + " =?"  ,new String[]{String.valueOf(value2)});
+        Cursor c = db.rawQuery("SELECT  * FROM " + LoginActivity.TABLE_QUESTION + "   where " + LoginActivity.COLUMN_SUBJECT_ID_RF + " =? ORDER BY RANDOM() LIMIT 20"  ,new String[]{String.valueOf(value2)});
         // looping through all rows and adding to list
         c.moveToFirst();
         while(!c.isAfterLast()) {

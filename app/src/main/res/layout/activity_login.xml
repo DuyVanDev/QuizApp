@@ -93,7 +93,7 @@
                         android:drawablePadding="10dp"
                         android:ems="10"
                         android:hint="Mật khẩu"
-                        android:inputType="textPersonName"
+                        android:inputType="textPassword"
                         android:paddingStart="10dp"
                         android:textColor="#E91E63"
                         android:textColorHint="#000000"

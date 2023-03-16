@@ -164,6 +164,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else if(isUser(username, password)) {
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    intent.putExtra("name",username);
                     startActivity(intent);
                 }
                 else {
