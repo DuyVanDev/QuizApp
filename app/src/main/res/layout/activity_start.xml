@@ -51,7 +51,7 @@
             android:id="@+id/btnStart"
             android:layout_width="150dp"
             android:layout_height="70dp"
-            android:text="Bat dau"
+            android:text="Bắt đầu"
             >
 
         </Button>

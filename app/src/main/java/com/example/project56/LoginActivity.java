@@ -18,7 +18,8 @@ public class LoginActivity extends AppCompatActivity {
     TextView tVSignUp;
 
 
-    public static final String DATABASE_NAME = "quizapp.db";
+//    public static final String DATABASE_NAME = "quizapp.db";
+    public static final String DATABASE_NAME = "quiz.db";
     SQLiteDatabase db;
     EditText edtUsername, edtPassword;
     Button btnClose;
@@ -33,88 +34,95 @@ public class LoginActivity extends AppCompatActivity {
     public static final String COLUMN_OPTION4 = "option4";
     public static final String COLUMN_SUBJECT_ID_RF = "subject_id";
     public static final String COLUMN_ANSWER_NR = "answer_cr";
+    public static final String COLUMN_USER_SELECTED = "userSelectedAnswer";
     //end question
 
     //table subject
     private static final String TABLE_SUBJECTS = "subjects";
     private static final String COLUMN_SUBJECT_ID = "subject_id";
     private static final String COLUMN_SUBJECT_NAME = "subject_name";
-    private void initDB() {
-        db = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
-        String sql;
-        try {
-            if(!isTableExists(db,"tbluser")) {
-                sql = "Create table tbluser (id_user Integer not null primary key AUTOINCREMENT,";
-                sql += "username Text not null,";
-                sql += "password Text not null)";
-                db.execSQL(sql);
-                sql = "insert into tbluser(username,password) values ('admin','admin')";
-                db.execSQL(sql);
-            }
-            if(!isTableExists(db,TABLE_QUESTION)) {
-                sql = "CREATE TABLE "+TABLE_QUESTION + "("
-                        + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                        + COLUMN_QUESTION + " TEXT,"
-                        + COLUMN_OPTION1 + " TEXT,"
-                        + COLUMN_OPTION2 + " TEXT,"
-                        + COLUMN_OPTION3 + " TEXT,"
-                        + COLUMN_OPTION4 + " TEXT,"
-                        + COLUMN_SUBJECT_ID_RF + " INTEGER,"
-                        + COLUMN_ANSWER_NR + " INTEGER"
-                        + ")";
-                db.execSQL(sql);
-            }
-            if(!isTableExists(db,TABLE_SUBJECTS)) {
-                sql = "CREATE TABLE " + TABLE_SUBJECTS + "("
-                        + COLUMN_SUBJECT_ID + " INTEGER PRIMARY KEY," + COLUMN_SUBJECT_NAME + " TEXT)";
-                db.execSQL(sql);
-            }
-        }
-        catch (Exception ex) {
-            Toast.makeText(this, "err", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    private void initDB() {
+//        db = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+//        String sql;
+//        try {
+//            if(!isTableExists(db,"tbluser")) {
+//                sql = "Create table tbluser (id_user Integer not null primary key AUTOINCREMENT,";
+//                sql += "username Text not null,";
+//                sql += "password Text not null)";
+//                db.execSQL(sql);
+//                sql = "insert into tbluser(username,password) values ('admin','admin')";
+//                db.execSQL(sql);
+//            }
+//            if(!isTableExists(db,TABLE_QUESTION)) {
+//                sql = "CREATE TABLE "+TABLE_QUESTION + "("
+//                        + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+//                        + COLUMN_QUESTION + " TEXT,"
+//                        + COLUMN_OPTION1 + " TEXT,"
+//                        + COLUMN_OPTION2 + " TEXT,"
+//                        + COLUMN_OPTION3 + " TEXT,"
+//                        + COLUMN_OPTION4 + " TEXT,"
+//                        + COLUMN_SUBJECT_ID_RF + " INTEGER,"
+//                        + COLUMN_ANSWER_NR + " TEXT,"
+//                        + COLUMN_USER_SELECTED + " TEXT"
+//                        + ")";
+//                db.execSQL(sql);
+//            }
+//            if(!isTableExists(db,TABLE_SUBJECTS)) {
+//                sql = "CREATE TABLE " + TABLE_SUBJECTS + "("
+//                        + COLUMN_SUBJECT_ID + " INTEGER PRIMARY KEY," + COLUMN_SUBJECT_NAME + " TEXT)";
+//                db.execSQL(sql);
+//            }
+//        }
+//        catch (Exception ex) {
+//            Toast.makeText(this, "err", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
-    private void addQuestions()
-    {
-        Question q1=new Question(1,"nam nay nam con gi","ty", "suu ", "dan", "meo",1,"ty","");
-        this.addQuestion(q1);
-        Question q2=new Question(2,"nam nay nam bao nhieu", "2022", "2023", "2024", "2025",1,"2023","");
-        this.addQuestion(q2);
-        Question q3=new Question(3,"what your name", "duy", "2023", "2024", "2025",2,"duy","");
-        this.addQuestion(q3);
+//    private void addQuestions()
+//    {
+//        Question q1=new Question("nam nay nam con gi","ty", "suu ", "dan", "meo",1,"ty");
+//        this.addQuestion(q1);
+//        Question q2=new Question("What your name","duy", "duy1 ", "duy2", "duy3",1,"duy");
+//        this.addQuestion(q2);
+//        Question q3=new Question("Nam nay nam bao nhieu","2022", "2023 ", "2024", "2025",1,"2023");
+//        this.addQuestion(q2);
+//
+//
+//    }
 
-    }
+//    public void addQuestion(Question quest) {
+//
+//        db = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE,null);
+//        ContentValues values = new ContentValues();
+//        values.put(COLUMN_QUESTION, quest.getQuestion());
+//        values.put(COLUMN_OPTION1, quest.getOption1());
+//        values.put(COLUMN_OPTION2, quest.getOption2());
+//        values.put(COLUMN_OPTION3, quest.getOption3());
+//        values.put(COLUMN_OPTION4, quest.getOption4());
+//        values.put(COLUMN_SUBJECT_ID_RF, quest.getSubject_id());
+//        values.put(COLUMN_ANSWER_NR, quest.getAnswer_cr());
+//        // Inserting Row
+//        db.insert(TABLE_QUESTION, null, values);
+//
+//
+//    }
 
-    public void addQuestion(Question quest) {
-        db = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE,null);
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_QUESTION, quest.getQuestion());
-        values.put(COLUMN_OPTION1, quest.getOption1());
-        values.put(COLUMN_OPTION2, quest.getOption2());
-        values.put(COLUMN_OPTION3, quest.getOption3());
-        values.put(COLUMN_OPTION4, quest.getOption4());
-        values.put(COLUMN_SUBJECT_ID_RF, quest.getSubject_id());
-        values.put(COLUMN_ANSWER_NR, quest.getAnswer_cr());
-        // Inserting Row
-        db.insert(TABLE_QUESTION, null, values);
 
-    }
 
-    private boolean isTableExists(SQLiteDatabase database, String tableName) {
-        Cursor cursor = database.rawQuery("select distinct tbl_name from sqlite_master where tbl_name" +
-                "= '" + tableName + "'", null);
-        if(cursor != null) {
-            if(cursor.getCount() > 0) {
-                cursor.close();
-                return true;
-
-            }
-
-            cursor.close();
-        }
-        return false;
-    }
+//    private boolean isTableExists(SQLiteDatabase database, String tableName) {
+//        Cursor cursor = database.rawQuery("select distinct tbl_name from sqlite_master where tbl_name" +
+//                "= '" + tableName + "'", null);
+//        if(cursor != null) {
+//            if(cursor.getCount() > 0) {
+//                cursor.close();
+//                return true;
+//
+//            }
+//
+//            cursor.close();
+//        }
+//        return false;
+//    }
     private boolean isUser(String username, String password) {
         try {
             db = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
@@ -145,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intentLogin);
             }
         });
-        initDB();
+//        initDB();
 //        addQuestions();
         btnLogin=(Button) findViewById(R.id.btnLogin);
 

@@ -36,6 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:id="@+id/ln1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         >
@@ -58,6 +59,17 @@
             android:text="Số câu sai: 0"
             ></TextView>
     </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnReview"
+        android:layout_width="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/ln1"
+        android:background="@drawable/round_back_green10"
+        android:text="Xem lai"
+        android:textColor="#FFFFFF" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnFinal"
