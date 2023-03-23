@@ -38,8 +38,6 @@ public class QuizActivity extends AppCompatActivity {
     SQLiteDatabase db;
     static List<Question> questionList;
     String getAnswer;
-    static List<Integer> listCorrect = new ArrayList<>();
-    static List<Integer> listInCorrect = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +86,7 @@ public class QuizActivity extends AppCompatActivity {
                 option4.setTextColor(Color.parseColor("#1F6BB8"));
                 option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
                 selectedOptionByUser = option1.getText().toString();
-                db = openOrCreateDatabase(LoginActivity.DATABASE_NAME, MODE_PRIVATE,null);
-
+                questionList.get(questionPosition).setUserSelectedAnswer(selectedOptionByUser);
 
                 updateUserSelected();
 
@@ -108,9 +105,9 @@ public class QuizActivity extends AppCompatActivity {
                 option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
                 option4.setTextColor(Color.parseColor("#1F6BB8"));
                 option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
-                db = openOrCreateDatabase(LoginActivity.DATABASE_NAME, MODE_PRIVATE,null);
 
                 selectedOptionByUser = option2.getText().toString();
+                questionList.get(questionPosition).setUserSelectedAnswer(selectedOptionByUser);
                 updateUserSelected();
 
 
@@ -128,9 +125,9 @@ public class QuizActivity extends AppCompatActivity {
                 option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
                 option4.setTextColor(Color.parseColor("#1F6BB8"));
                 option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
-                db = openOrCreateDatabase(LoginActivity.DATABASE_NAME, MODE_PRIVATE,null);
 
                 selectedOptionByUser = option3.getText().toString();
+                questionList.get(questionPosition).setUserSelectedAnswer(selectedOptionByUser);
                 updateUserSelected();
 
 
@@ -148,9 +145,9 @@ public class QuizActivity extends AppCompatActivity {
                 option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
                 option3.setTextColor(Color.parseColor("#1F6BB8"));
                 option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
-                db = openOrCreateDatabase(LoginActivity.DATABASE_NAME, MODE_PRIVATE,null);
 
                 selectedOptionByUser = option4.getText().toString();
+                questionList.get(questionPosition).setUserSelectedAnswer(selectedOptionByUser);
                 updateUserSelected();
 
 
@@ -205,8 +202,8 @@ public class QuizActivity extends AppCompatActivity {
                 Intent intent = new Intent(QuizActivity.this,ResultActivity.class);
                 quiztimer.purge();
                 quiztimer.cancel();
-//                intent.putExtra("correct",getCorrectAnswers());
-//                intent.putExtra("incorrect",getInCorrectAnswers());
+                intent.putExtra("correct",getCorrectAnswers());
+                intent.putExtra("incorrect",getInCorrectAnswers());
                 startActivity(intent);
                 finish();
             }
@@ -238,7 +235,7 @@ public class QuizActivity extends AppCompatActivity {
             questionPosition--;
             nextBtn.setText("Sau");
             txtQuestions.setText((questionPosition + 1) + ""+"/"+(questionList.size()));
-            if(questionPosition-1 <= 0) {
+            if(questionPosition-1 < 0) {
                 prevBtn.setEnabled(false);
                 prevBtn.setBackgroundResource(R.drawable.round_black_green_disable);
             }
@@ -279,8 +276,8 @@ public class QuizActivity extends AppCompatActivity {
                     quiztimer.purge();
                     quiztimer.cancel();
                     Intent intent = new Intent(QuizActivity.this,ResultActivity.class);
-//                    intent.putExtra("correct",getCorrectAnswers());
-//                    intent.putExtra("incorrect",getInCorrectAnswers());
+                    intent.putExtra("correct",getCorrectAnswers());
+                    intent.putExtra("incorrect",getInCorrectAnswers());
                     startActivity(intent);
                     finish();
                 }
@@ -329,9 +326,10 @@ public class QuizActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int value2 = intent.getIntExtra("categoryId",0);
         db = openOrCreateDatabase(LoginActivity.DATABASE_NAME, MODE_PRIVATE,null);
-        Cursor c = db.rawQuery("SELECT  * FROM " + LoginActivity.TABLE_QUESTION + "   where " + LoginActivity.COLUMN_SUBJECT_ID_RF + " =? ORDER BY RANDOM() LIMIT 2"  ,new String[]{String.valueOf(value2)});
+        Cursor c = db.rawQuery("SELECT  * FROM " + LoginActivity.TABLE_QUESTION + "   where " + LoginActivity.COLUMN_SUBJECT_ID_RF + " =? ORDER BY RANDOM() LIMIT 5"  ,new String[]{String.valueOf(value2)});
         // looping through all rows and adding to list
         c.moveToFirst();
+
         while(!c.isAfterLast()) {
             quesList.add(new Question(c.getInt(0),c.getString(1),c.getString(2),
                     c.getString(3),c.getString(4),c.getString(5),c.getInt(6),c.getString(7)));
@@ -343,10 +341,11 @@ public class QuizActivity extends AppCompatActivity {
     public void updateUserSelected() {
 
         try {
+            db = openOrCreateDatabase(LoginActivity.DATABASE_NAME, MODE_PRIVATE,null);
 
             ContentValues values = new ContentValues();
             values.put(LoginActivity.COLUMN_USER_SELECTED, selectedOptionByUser);
-            db.update(LoginActivity.TABLE_QUESTION, values, "id=?", new String[]{String.valueOf(questionPosition+1)});
+            db.update(LoginActivity.TABLE_QUESTION, values, "question=?", new String[]{questionList.get(questionPosition).getQuestion()});
 
         } catch (Exception ex) {
             Toast.makeText(QuizActivity.this, "err", Toast.LENGTH_SHORT).show();
@@ -355,7 +354,7 @@ public class QuizActivity extends AppCompatActivity {
 
     public void getAnswerSelected () {
         String userGetSelected = "";
-        Cursor c = db.rawQuery("SELECT userSelectedAnswer FROM " + LoginActivity.TABLE_QUESTION + "  where " + LoginActivity.COLUMN_ID + " = ? "  ,new String[]{String.valueOf(questionPosition + 1)});
+        Cursor c = db.rawQuery("SELECT userSelectedAnswer FROM " + LoginActivity.TABLE_QUESTION + "  where " + LoginActivity.COLUMN_QUESTION + " = ? "  ,new String[]{questionList.get(questionPosition).getQuestion()});
         c.moveToFirst();
         userGetSelected = c.getString(0);
 
@@ -378,6 +377,34 @@ public class QuizActivity extends AppCompatActivity {
             option4.setTextColor(Color.WHITE);
         }
         
+    }
+
+    private int getCorrectAnswers() {
+        int correctAnswer = 0;
+        for(int i = 0 ;i < questionList.size();i++) {
+
+
+
+            String getUserSelected = questionList.get(i).getUserSelectedAnswer();
+            String getAnswer = questionList.get(i).getAnswer_cr();
+            if(getUserSelected.equals(getAnswer)) {
+                correctAnswer++;
+            }
+
+        }
+        return correctAnswer;
+    }
+
+    private int getInCorrectAnswers() {
+        int inCorrectAnswer = 0;
+        for(int i = 0 ;i < questionList.size();i++) {
+            String getUserSelected = questionList.get(i).getUserSelectedAnswer();
+            String getAnswer = questionList.get(i).getAnswer_cr();
+            if(!getUserSelected.equals(getAnswer)) {
+                inCorrectAnswer++;
+            }
+        }
+        return inCorrectAnswer;
     }
 
 }

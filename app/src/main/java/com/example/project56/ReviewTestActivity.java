@@ -21,11 +21,12 @@ public class ReviewTestActivity extends AppCompatActivity {
     SQLiteDatabase db;
     Button option1, option2, option3,option4;
     String answerCorrect;
+    List<Question> qt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_test);
-        List<Question> qt = QuizActivity.questionList;
+         qt = QuizActivity.questionList;
         txtQuestions = findViewById(R.id.questions);
         txtQuestion = findViewById(R.id.question);
 
@@ -87,7 +88,7 @@ public class ReviewTestActivity extends AppCompatActivity {
         // Select All Query
 
         db = openOrCreateDatabase(LoginActivity.DATABASE_NAME, MODE_PRIVATE,null);
-        Cursor c = db.rawQuery("SELECT  userSelectedAnswer FROM " + LoginActivity.TABLE_QUESTION + "  where " + LoginActivity.COLUMN_ID + " = ? "  ,new String[]{String.valueOf(currentQuestion + 1 )});
+        Cursor c = db.rawQuery("SELECT  userSelectedAnswer FROM " + LoginActivity.TABLE_QUESTION + "  where " + LoginActivity.COLUMN_QUESTION + " = ? "  ,new String[]{qt.get(currentQuestion).getQuestion()});
         c.moveToFirst();
             userGetSelected = c.getString(0);
 

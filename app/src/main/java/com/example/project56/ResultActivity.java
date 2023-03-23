@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class ResultActivity extends AppCompatActivity {
 
     Button btnFinal, btnReview;
@@ -23,20 +25,22 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
         btnFinal = findViewById(R.id.btnFinal);
         correctAnswer = findViewById(R.id.correctAnswer);
+        List<Question> questionList = QuizActivity.questionList;
+        int correctAnswers = getIntent().getIntExtra("correct",0);
+        int inCorrectAnswers = getIntent().getIntExtra("incorrect",0);
         inCorrectAnswer = findViewById(R.id.inCorrectAnswer);
         btnReview =(Button) findViewById(R.id.btnReview);
-        correctAnswer.setText("Số câu đúng: " + getCorrectAnswers());
-        inCorrectAnswer.setText("Số câu sai: " + getInCorrectAnswers());
+        correctAnswer.setText("Số câu đúng: " + correctAnswers);
+        inCorrectAnswer.setText("Số câu sai: " + inCorrectAnswers);
         btnFinal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ResultActivity.this,HomeActivity.class);
-                QuizActivity.listCorrect.clear();
-                QuizActivity.listInCorrect.clear();
                 db = openOrCreateDatabase(LoginActivity.DATABASE_NAME, MODE_PRIVATE,null);
                 ContentValues values = new ContentValues();
                 values.put(LoginActivity.COLUMN_USER_SELECTED, "");
                 db.update(LoginActivity.TABLE_QUESTION, values, null, null);
+
+                Intent intent = new Intent(ResultActivity.this,HomeActivity.class);
 
                 startActivity(intent);
             }
@@ -51,25 +55,5 @@ public class ResultActivity extends AppCompatActivity {
         });
     }
 
-    private int getCorrectAnswers() {
 
-        db = openOrCreateDatabase(LoginActivity.DATABASE_NAME, MODE_PRIVATE,null);
-        Cursor c = db.rawQuery("SELECT  count(*) FROM " + LoginActivity.TABLE_QUESTION + " where " + LoginActivity.COLUMN_USER_SELECTED + " == " + LoginActivity.COLUMN_ANSWER_NR , null);
-        c.moveToFirst();
-
-        int correctAnswers = c.getInt(0);
-
-        return correctAnswers;
-    }
-
-    private int getInCorrectAnswers() {
-
-        db = openOrCreateDatabase(LoginActivity.DATABASE_NAME, MODE_PRIVATE,null);
-        Cursor c = db.rawQuery("SELECT  count(*) FROM " + LoginActivity.TABLE_QUESTION + " where " + LoginActivity.COLUMN_USER_SELECTED + " != " + LoginActivity.COLUMN_ANSWER_NR , null);
-        c.moveToFirst();
-        int inCorrectAnswers = c.getInt(0);
-
-
-        return inCorrectAnswers;
-    }
 }
