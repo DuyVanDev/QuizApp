@@ -143,6 +143,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        db = Database.initDatabase(this,DATABASE_NAME);
       edtUsername = (EditText) findViewById(R.id.edtUserName);
       edtPassword = (EditText) findViewById(R.id.edtPassword);
         tVSignUp=(TextView) findViewById(R.id.tVSignUp);

@@ -326,7 +326,7 @@ public class QuizActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int value2 = intent.getIntExtra("categoryId",0);
         db = openOrCreateDatabase(LoginActivity.DATABASE_NAME, MODE_PRIVATE,null);
-        Cursor c = db.rawQuery("SELECT  * FROM " + LoginActivity.TABLE_QUESTION + "   where " + LoginActivity.COLUMN_SUBJECT_ID_RF + " =? ORDER BY RANDOM() LIMIT 5"  ,new String[]{String.valueOf(value2)});
+        Cursor c = db.rawQuery("SELECT  * FROM " + LoginActivity.TABLE_QUESTION + "   where " + LoginActivity.COLUMN_SUBJECT_ID_RF + " =? ORDER BY RANDOM() LIMIT 20"  ,new String[]{String.valueOf(value2)});
         // looping through all rows and adding to list
         c.moveToFirst();
 

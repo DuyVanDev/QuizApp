@@ -66,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/background_white"
         android:elevation="1dp"
         android:paddingStart="15dp"
@@ -89,7 +89,7 @@
         android:textColor="#CC000000"
         android:text="Question will come here"
         android:textStyle="bold"
-        android:textSize="20dp"
+        android:textSize="16sp"
         />
 
     <androidx.appcompat.widget.AppCompatButton
