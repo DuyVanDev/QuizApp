@@ -1,14 +1,12 @@
 package com.example.project56;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -43,8 +41,6 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
-        final MediaPlayer mediaPlayerCorrect = MediaPlayer.create(QuizActivity.this,R.raw.correct);
-        final MediaPlayer mediaPlayerInCorrect = MediaPlayer.create(QuizActivity.this,R.raw.incorrect);
         questionPosition = 0;
         questionList = getAllQuestions();
         ImageView backBtn = findViewById(R.id.backBtn);
@@ -66,7 +62,8 @@ public class QuizActivity extends AppCompatActivity {
         selectedOptionByUser = "";
 
         startTimer(timer);
-        selectTopicname.setText(getIntent().getStringExtra("name"));
+
+        selectTopicname.setText(getIntent().getStringExtra("categoryName"));
         txtQuestions.setText((questionPosition + 1) + ""+"/"+(questionList.size()));
         txtQuestion.setText(questionList.get(0).getQuestion());
         option1.setText(questionList.get(0).getOption1());
@@ -199,11 +196,15 @@ public class QuizActivity extends AppCompatActivity {
 
 
             if(questionPosition >= questionList.size()) {
-                Intent intent = new Intent(QuizActivity.this,ResultActivity.class);
+                Intent intent = new Intent(QuizActivity.this,ButtonReviewActivity.class);
+
                 quiztimer.purge();
                 quiztimer.cancel();
                 intent.putExtra("correct",getCorrectAnswers());
                 intent.putExtra("incorrect",getInCorrectAnswers());
+
+                intent.putExtra("categoryId",getIntent().getIntExtra("categoryId",0));
+                intent.putExtra("categoryName",getIntent().getStringExtra("categoryName"));
                 startActivity(intent);
                 finish();
             }
@@ -275,7 +276,7 @@ public class QuizActivity extends AppCompatActivity {
                 if(seconds == 0 && totalTimeInMins == 00) {
                     quiztimer.purge();
                     quiztimer.cancel();
-                    Intent intent = new Intent(QuizActivity.this,ResultActivity.class);
+                    Intent intent = new Intent(QuizActivity.this,ButtonReviewActivity.class);
                     intent.putExtra("correct",getCorrectAnswers());
                     intent.putExtra("incorrect",getInCorrectAnswers());
                     startActivity(intent);
@@ -302,6 +303,7 @@ public class QuizActivity extends AppCompatActivity {
                         }
 
                         timerTextView.setText((finalMinutes+":"+finalSeconds));
+
                     }
                 });
             }
@@ -376,7 +378,11 @@ public class QuizActivity extends AppCompatActivity {
             option4.setBackgroundResource(R.drawable.round_back_selected);
             option4.setTextColor(Color.WHITE);
         }
-        
+        else {
+            selectedOptionByUser = "";
+            updateUserSelected();
+        }
+
     }
 
     private int getCorrectAnswers() {
@@ -400,11 +406,16 @@ public class QuizActivity extends AppCompatActivity {
         for(int i = 0 ;i < questionList.size();i++) {
             String getUserSelected = questionList.get(i).getUserSelectedAnswer();
             String getAnswer = questionList.get(i).getAnswer_cr();
-            if(!getUserSelected.equals(getAnswer)) {
+
+             if(!getUserSelected.equals(getAnswer)) {
                 inCorrectAnswer++;
             }
+
         }
         return inCorrectAnswer;
     }
+
+
+
 
 }

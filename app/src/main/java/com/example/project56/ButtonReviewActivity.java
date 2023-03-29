@@ -3,10 +3,12 @@ package com.example.project56;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -15,12 +17,27 @@ import java.util.List;
 public class ButtonReviewActivity extends AppCompatActivity {
     List<Question> lstQuestion = QuizActivity.questionList;
     List<Button> buttonList = new ArrayList<>();
+    SQLiteDatabase db;
+    TextView correctAnswer, inCorrectAnswer,txtScrore;
+    Button btnExit,btnRework;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_button_review);
         ViewGroup rootView = (ViewGroup) findViewById(android.R.id.content);
         findButtons(rootView, buttonList);
+        btnExit = findViewById(R.id.btnExit);
+        btnRework = findViewById(R.id.btnRework);
+        txtScrore = findViewById(R.id.score);
+        correctAnswer = findViewById(R.id.correctAnswer);
+        inCorrectAnswer = findViewById(R.id.inCorrectAnswer);
+        int correctAnswers = getIntent().getIntExtra("correct",0);
+        double score = (double)(correctAnswers * 10 / 20);
+        int inCorrectAnswers = getIntent().getIntExtra("incorrect",0);
+        correctAnswer.setText(correctAnswers + " câu đúng");
+        inCorrectAnswer.setText(inCorrectAnswers + " câu sai");
+        txtScrore.setText(score + " điểm");
+
         for(int i = 0 ;i < lstQuestion.size() ; i++) {
             if(lstQuestion.get(i).getAnswer_cr().equals(lstQuestion.get(i).getUserSelectedAnswer()) ) {
                 buttonList.get(i).setBackgroundResource(R.drawable.round_back_green10);
@@ -28,15 +45,26 @@ public class ButtonReviewActivity extends AppCompatActivity {
                 buttonList.get(i).setBackgroundResource(R.drawable.round_back_red10);
             }
         }
-//        for(int i = 0 ;i < numberTotal.length ; i++) {
-//            if(lstCorrect.contains(numberTotal[i])) {
-//                buttonList.get(i).setBackgroundResource(R.drawable.round_back_green10);
-//            }
-//            if(lstInCorrect.contains(numberTotal[i])) {
-//                buttonList.get(i).setBackgroundResource(R.drawable.round_back_red10);
-//            }
-//        }
 
+
+
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ButtonReviewActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnRework.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ButtonReviewActivity.this, StartActivity.class);
+                intent.putExtra("categoryId",getIntent().getIntExtra("categoryId",0));
+                intent.putExtra("categoryName",getIntent().getStringExtra("categoryName"));
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -51,9 +79,7 @@ public class ButtonReviewActivity extends AppCompatActivity {
         }
     }
 
-    public void setBg() {
 
-    }
 
     
     public void onClick(View v) {
