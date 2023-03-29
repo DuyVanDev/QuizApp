@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@color/purple_200"
         android:padding="10dp"
-        android:text="Kết quả bài kiểm tra"
+        android:text="Kết quả bài kiểm tra 1"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="25sp"
