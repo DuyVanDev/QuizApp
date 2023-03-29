@@ -32,7 +32,7 @@ public class ButtonReviewActivity extends AppCompatActivity {
         correctAnswer = findViewById(R.id.correctAnswer);
         inCorrectAnswer = findViewById(R.id.inCorrectAnswer);
         int correctAnswers = getIntent().getIntExtra("correct",0);
-        double score = (double)(correctAnswers * 10 / 20);
+        double score = ((double)(correctAnswers * 10) / 20);
         int inCorrectAnswers = getIntent().getIntExtra("incorrect",0);
         correctAnswer.setText(correctAnswers + " câu đúng");
         inCorrectAnswer.setText(inCorrectAnswers + " câu sai");
