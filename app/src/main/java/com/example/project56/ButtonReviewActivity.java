@@ -40,9 +40,9 @@ public class ButtonReviewActivity extends AppCompatActivity {
 
         for(int i = 0 ;i < lstQuestion.size() ; i++) {
             if(lstQuestion.get(i).getAnswer_cr().equals(lstQuestion.get(i).getUserSelectedAnswer()) ) {
-                buttonList.get(i).setBackgroundResource(R.drawable.round_back_green10);
+                buttonList.get(i).setBackgroundTintList(this.getResources().getColorStateList(R.color.green));
             }else  {
-                buttonList.get(i).setBackgroundResource(R.drawable.round_back_red10);
+                buttonList.get(i).setBackgroundTintList(this.getResources().getColorStateList(R.color.error));
             }
         }
 

@@ -4,23 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     android:orientation="vertical"
+
     tools:context=".StartActivity">
+
     <TextView
         android:id="@+id/txtTitle"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:fontFamily="@font/alata"
+        android:gravity="center"
         android:text="Mon"
-        android:gravity="center_vertical"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:background="@color/green"
-        ></TextView>
+        android:textColor="@color/edit_text_bg"
+        android:textSize="25sp"
+        android:textAllCaps="true"
+        android:textStyle="bold"></TextView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="250dp"
         android:gravity="center_horizontal"
 
         android:orientation="vertical">
@@ -29,10 +33,11 @@
             android:id="@+id/txtTotalQuestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:text="Số câu: 20">
+            android:fontFamily="@font/alata"
+            android:text="Số câu: 20"
+            android:textColor="@color/edit_text_bg"
+            android:textSize="20sp"
+            android:textStyle="bold">
 
 
         </TextView>
@@ -41,18 +46,33 @@
             android:id="@+id/txtTotalTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_margin="50dp"
-            android:text="Thời gian: 20 phút">
-        </TextView>
+            android:layout_margin="20dp"
+            android:fontFamily="@font/alata"
+            android:text="Thời gian: 20 phút"
+            android:textColor="@color/edit_text_bg"
+            android:textSize="20sp"
+            android:textStyle="italic"></TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        android:layout_marginTop="50dp">
+
         <Button
             android:id="@+id/btnStart"
-            android:layout_width="150dp"
-            android:layout_height="70dp"
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/radius"
+            android:backgroundTint="@color/green"
+
+            android:fontFamily="@font/alata"
             android:text="Bắt đầu"
-            >
+            android:textStyle="bold"
+            app:icon="@drawable/baseline_not_started_24"
+            app:iconPadding="0dp">
 
         </Button>
     </LinearLayout>

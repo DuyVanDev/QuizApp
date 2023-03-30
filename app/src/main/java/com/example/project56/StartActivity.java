@@ -26,7 +26,7 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intentNew = new Intent(StartActivity.this, QuizActivity.class);
                 intentNew.putExtra("categoryId",intent.getIntExtra("categoryId",0));
-                intentNew.putExtra("categoryName",txtTitle.getText());
+                intentNew.putExtra( "categoryName",txtTitle.getText());
                 startActivity(intentNew);
             }
         });

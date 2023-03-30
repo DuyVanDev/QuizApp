@@ -2,7 +2,6 @@ package com.example.project56;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -156,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 //        initDB();
 //        addQuestions();
-        btnLogin=(Button) findViewById(R.id.btnLogin);
+        btnLogin=(Button) findViewById(R.id.btnSignup);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
