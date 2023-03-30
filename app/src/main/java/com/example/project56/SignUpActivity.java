@@ -3,6 +3,8 @@ package com.example.project56;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -66,6 +68,30 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    public void tVLogin_onClick(View view) {
+    @Override
+    public void onBackPressed() {
+        // Tạo một đối tượng AlertDialog.Builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thoát ứng dụng");
+        builder.setMessage("Bạn có muốn thoát ứng dụng không?");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Khi người dùng nhấn Có, thoát khỏi Activity
+                SignUpActivity.this.finish();
+            }
+        });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Khi người dùng nhấn Không, đóng hộp thoại
+                dialog.dismiss();
+            }
+        });
+
+        // Hiển thị hộp thoại
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
+
 }

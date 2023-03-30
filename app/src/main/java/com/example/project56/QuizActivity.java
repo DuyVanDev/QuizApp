@@ -2,18 +2,26 @@ package com.example.project56;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +31,11 @@ import java.util.TimerTask;
 public class QuizActivity extends AppCompatActivity {
     TextView txtQuestions;
     TextView txtQuestion;
-
+    List<Button> buttonList = new ArrayList<>();
     Button option1, option2, option3,option4;
     Button nextBtn;
     Button prevBtn;
+    FloatingActionButton fab;
     String sql;
 
     int questionPosition;
@@ -42,8 +51,12 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
-        questionPosition = 0;
+        ViewGroup rootView = (ViewGroup) getLayoutInflater().inflate(R.layout.bottomsheetlayout, null);
+        findButtons(rootView, buttonList);
+        fab=findViewById(R.id.fab);
         questionList = getAllQuestions();
+
+        questionPosition = 0;
         ImageView backBtn = findViewById(R.id.backBtn);
         TextView timer = findViewById(R.id.timer);
         TextView selectTopicname = findViewById(R.id.topicName);
@@ -66,15 +79,20 @@ public class QuizActivity extends AppCompatActivity {
 
         selectTopicname.setText(getIntent().getStringExtra("categoryName"));
         txtQuestions.setText((questionPosition + 1) + ""+"/"+(questionList.size()));
-        txtQuestion.setText(questionList.get(0).getQuestion());
-        option1.setText(questionList.get(0).getOption1());
-        option2.setText(questionList.get(0).getOption2());
-        option3.setText(questionList.get(0).getOption3());
-        option4.setText(questionList.get(0).getOption4());
+        txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+        option1.setText(questionList.get(questionPosition).getOption1());
+        option2.setText(questionList.get(questionPosition).getOption2());
+        option3.setText(questionList.get(questionPosition).getOption3());
+        option4.setText(questionList.get(questionPosition).getOption4());
+
+
+
+
+
         option1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//                Toast.makeText(QuizActivity.this, buttonList.get(1).getText(), Toast.LENGTH_SHORT).show();
                 option1.setBackgroundResource(R.drawable.round_back_selected);
                 option1.setTextColor(Color.WHITE);
                 option2.setTextColor(Color.parseColor("#1F6BB8"));
@@ -85,9 +103,7 @@ public class QuizActivity extends AppCompatActivity {
                 option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
                 selectedOptionByUser = option1.getText().toString();
                 questionList.get(questionPosition).setUserSelectedAnswer(selectedOptionByUser);
-
                 updateUserSelected();
-
             }
         });
 
@@ -147,8 +163,6 @@ public class QuizActivity extends AppCompatActivity {
                 selectedOptionByUser = option4.getText().toString();
                 questionList.get(questionPosition).setUserSelectedAnswer(selectedOptionByUser);
                 updateUserSelected();
-
-
             }
         });
 
@@ -161,10 +175,6 @@ public class QuizActivity extends AppCompatActivity {
                 }
                     String action = "next";
                     changeNextQuestion(action);
-
-
-
-
             }
         });
 
@@ -187,6 +197,14 @@ public class QuizActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            showBottomDialog();
+            }
+        });
     }
 
     private void changeNextQuestion(String action) {
@@ -201,7 +219,6 @@ public class QuizActivity extends AppCompatActivity {
             if((questionPosition+1) == questionList.size()) {
                 nextBtn.setText("Kết thúc");
             }
-
 
             if(questionPosition >= questionList.size()) {
                 Intent intent = new Intent(QuizActivity.this,ButtonReviewActivity.class);
@@ -235,9 +252,6 @@ public class QuizActivity extends AppCompatActivity {
                 option4.setText(questionList.get(questionPosition).getOption4());
                 txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
                 getAnswerSelected();
-
-
-
             }
         }
         else {
@@ -309,7 +323,6 @@ public class QuizActivity extends AppCompatActivity {
                         if(finalSeconds.length() == 1) {
                             finalSeconds = "0"+finalSeconds;
                         }
-
                         timerTextView.setText((finalMinutes+":"+finalSeconds));
 
                     }
@@ -318,8 +331,6 @@ public class QuizActivity extends AppCompatActivity {
         },1000,1000);
     }
 
-
-
     @Override
     public void onBackPressed() {
         quiztimer.purge();
@@ -327,8 +338,6 @@ public class QuizActivity extends AppCompatActivity {
 
         startActivity(new Intent(QuizActivity.this, HomeActivity.class));
     }
-
-
 
     public List<Question> getAllQuestions() {
         List<Question> quesList = new ArrayList<>();
@@ -421,6 +430,461 @@ public class QuizActivity extends AppCompatActivity {
 
         }
         return inCorrectAnswer;
+    }
+
+    private void showBottomDialog() {
+
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottomsheetlayout);
+
+
+
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+
+    }
+
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.cau1: {
+
+                questionPosition = 0;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau2: {
+                questionPosition = 1;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau3: {
+                questionPosition = 2;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau4: {
+                questionPosition = 3;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau5: {
+                questionPosition = 4;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau6: {
+                questionPosition = 5;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau7: {
+                questionPosition = 6;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau8: {
+                questionPosition = 7;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau9: {
+                questionPosition = 8;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau10: {
+                questionPosition = 9;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau11: {
+                questionPosition = 10;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau12: {
+                questionPosition = 11;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau13: {
+                questionPosition = 12;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau14: {
+                questionPosition = 13;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau15: {
+                questionPosition = 14;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau16: {
+                questionPosition = 15;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau17: {
+                questionPosition = 16;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            case R.id.cau18: {
+                questionPosition = 17;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+            case R.id.cau19: {
+                questionPosition = 18;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+            case R.id.cau20: {
+                questionPosition = 19;
+                selectedOptionByUser = "";
+                option1.setTextColor(Color.parseColor("#1F6BB8"));
+                option1.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option2.setTextColor(Color.parseColor("#1F6BB8"));
+                option2.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option3.setTextColor(Color.parseColor("#1F6BB8"));
+                option3.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                option4.setTextColor(Color.parseColor("#1F6BB8"));
+                option4.setBackgroundResource(R.drawable.round_back_white_stroke_10);
+                txtQuestion.setText(questionList.get(questionPosition).getQuestion());
+                option1.setText(questionList.get(questionPosition).getOption1());
+                option2.setText(questionList.get(questionPosition).getOption2());
+                option3.setText(questionList.get(questionPosition).getOption3());
+                option4.setText(questionList.get(questionPosition).getOption4());
+                txtQuestions.setText((questionPosition + 1) + ""+"/"+questionList.size());
+                getAnswerSelected();
+                break;
+            }
+
+            default: {
+                Toast.makeText(QuizActivity.this, "Chua biet", Toast.LENGTH_SHORT).show();
+                break;
+            }
+        }
+    }
+    private void findButtons(ViewGroup viewGroup, List<Button> buttonList) {
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                findButtons((ViewGroup) child, buttonList);
+            } else if (child instanceof Button) {
+                buttonList.add((Button) child);
+            }
+        }
     }
 
 

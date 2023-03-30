@@ -24,7 +24,7 @@ public class ButtonReviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_button_review);
-        ViewGroup rootView = (ViewGroup) findViewById(android.R.id.content);
+        ViewGroup rootView = (ViewGroup) findViewById(R.id.linearLayout6);
         findButtons(rootView, buttonList);
         btnExit = findViewById(R.id.btnExit);
         btnRework = findViewById(R.id.btnRework);
@@ -87,138 +87,138 @@ public class ButtonReviewActivity extends AppCompatActivity {
             case R.id.cau1: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
 
-                intent.putExtra("numberQuestion",1);
+                intent.putExtra("numberQuestion", 1);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau2: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",2);
+                intent.putExtra("numberQuestion", 2);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau3: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",3);
+                intent.putExtra("numberQuestion", 3);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau4: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",4);
+                intent.putExtra("numberQuestion", 4);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau5: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",5);
+                intent.putExtra("numberQuestion", 5);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau6: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",6);
+                intent.putExtra("numberQuestion", 6);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau7: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",7);
+                intent.putExtra("numberQuestion", 7);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau8: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",8);
+                intent.putExtra("numberQuestion", 8);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau9: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",9);
+                intent.putExtra("numberQuestion", 9);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau10: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",10);
+                intent.putExtra("numberQuestion", 10);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau11: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",11);
+                intent.putExtra("numberQuestion", 11);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau12: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",12);
+                intent.putExtra("numberQuestion", 12);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau13: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",13);
+                intent.putExtra("numberQuestion", 13);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau14: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",14);
+                intent.putExtra("numberQuestion", 14);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau15: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",15);
+                intent.putExtra("numberQuestion", 15);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau16: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",16);
+                intent.putExtra("numberQuestion", 16);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau17: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",17);
+                intent.putExtra("numberQuestion", 17);
                 startActivity(intent);
                 break;
             }
 
             case R.id.cau18: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",18);
+                intent.putExtra("numberQuestion", 18);
                 startActivity(intent);
                 break;
             }
             case R.id.cau19: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",19);
+                intent.putExtra("numberQuestion", 19);
                 startActivity(intent);
                 break;
             }
             case R.id.cau20: {
                 Intent intent = new Intent(ButtonReviewActivity.this, ReviewTestActivity.class);
-                intent.putExtra("numberQuestion",20);
+                intent.putExtra("numberQuestion", 20);
                 startActivity(intent);
                 break;
             }
@@ -229,4 +229,5 @@ public class ButtonReviewActivity extends AppCompatActivity {
             }
         }
     }
+
 }
