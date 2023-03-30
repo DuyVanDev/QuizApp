@@ -17,4 +17,8 @@
 
     <color name="blue_med">#03A9F4</color>
     <color name="light_blue_med">#89C4DA</color>
+
+    <color name="lavender">#8692f7</color>
+    <color name="grey">#d2d2d2</color>
+
 </resources>
