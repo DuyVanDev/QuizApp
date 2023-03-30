@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -154,8 +155,15 @@ public class QuizActivity extends AppCompatActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String action = "next";
-                changeNextQuestion(action);
+                if(TextUtils.isEmpty(questionList.get(questionPosition).getUserSelectedAnswer())){
+                    Toast.makeText(QuizActivity.this, "Chưa chọn đáp án kìa bạn !", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                    String action = "next";
+                    changeNextQuestion(action);
+
+
+
 
             }
         });
