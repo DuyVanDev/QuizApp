@@ -182,4 +182,17 @@
             />
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_baseline_format_list_numbered_24"
+        app:maxImageSize="40dp"
+        app:tint="@color/purple_200" />
+
+
 </LinearLayout>

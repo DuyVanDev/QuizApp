@@ -5,101 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ButtonReviewActivity">
+    android:background="@drawable/dialogbkg"
+    tools:context=".QuizActivity">
 
-    <TextView
-        android:id="@+id/txtTitle"
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:background="@color/purple_200"
-        android:padding="10dp"
-        android:text="Kết quả bài kiểm tra"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="25sp"
-
-        android:textStyle="bold">
-
-    </TextView>
-
-    <LinearLayout
-        android:id="@+id/linearLayout8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dp">
-
-        <TextView
-            android:id="@+id/score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="0.0 điểm"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:padding="10dp"-->
-<!--            android:text="Thời gian: "-->
-<!--            android:textColor="@color/blue_med"-->
-<!--            android:textSize="15sp"-->
-<!--            android:textStyle="bold">-->
-
-<!--        </TextView>-->
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dp">
-
-        <TextView
-            android:id="@+id/correctAnswer"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="... câu đúng"
-            android:textColor="@color/green"
-            android:textSize="15sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <TextView
-            android:id="@+id/inCorrectAnswer"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="... câu sai"
-            android:textColor="@color/error"
-            android:textSize="15sp"
-            android:textStyle="bold"></TextView>
-
-
-
-    </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="10dp"
-        android:text="Nhấn vào câu muốn xem lại đáp án"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        android:textStyle="bold"></TextView>
-
-
+        android:src="@drawable/ic_baseline_remove_24"
+        android:layout_gravity="center|top"
+        android:id="@+id/asd"
+        android:scaleType="centerCrop"/>
     <LinearLayout
         android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
@@ -396,33 +311,5 @@
                 app:layout_constraintTop_toBottomOf="@+id/cau4"></androidx.appcompat.widget.AppCompatButton>
 
         </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnRework"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="Làm lại"
-            android:layout_margin="20dp"
-            android:background="@drawable/radius"
-            android:layout_gravity="bottom">
-        </Button>
-
-        <Button
-            android:id="@+id/btnExit"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="Thoát"
-            android:layout_margin="20dp"
-            android:background="@drawable/radius"
-            android:layout_gravity="bottom">
-        </Button>
     </LinearLayout>
 </LinearLayout>
